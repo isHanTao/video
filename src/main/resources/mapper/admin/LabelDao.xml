@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.exam.dao.admin.LabelDao">
+    <!-- 根据分类查询所有标签 -->
+    <select id="queryLabel" resultType="com.exam.bean.admin.LabelBean">
+        SELECT label.classify, label.label_id as labelId, label.label
+        FROM label
+        WHERE label.classify like #{classify}
+    </select>
+
+    <!-- 根据标签id查询标签详情 -->
+    <select id="queryLabelDetail" resultType="com.exam.bean.admin.LabelBean">
+        SELECT label.classify, label.label
+        FROM label
+        WHERE label.label_id = #{labelId}
+        limit 1
+    </select>
+
+    <!-- 根据分类和标签名查询标签id -->
+    <select id="queryLabelId" resultType="Integer">
+        SELECT label.label_id
+        FROM label
+        WHERE label.label = #{label} and label.classify = #{classify}
+         limit 1
+    </select>
+
+    <!-- 查询所有标签id -->
+    <select id="queryLabelIdAll" resultType="Integer">
+        SELECT label.label_id
+        FROM label
+    </select>
+
+    <!-- 插入新标签 -->
+    <select id="addLabel">
+        INSERT INTO label(label, classify) VALUES (#{label}, #{classify})
+    </select>
+
+    <!-- 修改标签 -->
+    <select id="modifyLabel">
+        UPDATE label
+        <set>
+            <if test="newLabel != null">label.label = #{newLabel},</if>
+            <if test="newClassify != null">label.classify = #{newClassify}</if>
+        </set>
+        WHERE label.label_id = #{labelId}
+    </select>
+
+    <!-- 删除标签 -->
+    <delete id="deleteLabel">
+        DELETE FROM label
+        WHERE  label.label_id = #{labelId}
+    </delete>
+
+    <!-- 将删除的标签对应的视频的标签改为其他 -->
+    <select id="modifyVideos">
+        UPDATE video
+        <set>
+            <if test="modifyLabelId != null">video.label_id = #{modifyLabelId}</if>
+        </set>
+        WHERE video.label_id = #{oldLabelId}
+    </select>
+</mapper>

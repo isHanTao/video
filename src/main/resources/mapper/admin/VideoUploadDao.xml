@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.exam.dao.admin.VideoUploadDao">
+    <!-- 保存视频信息  包括视频名称，描述，年级，标签id，状态0 -->
+    <insert id="savaVideoInformation" parameterType="com.exam.bean.admin.VideoBean">
+        <selectKey keyProperty="videoId" order="AFTER" resultType="java.lang.Integer">
+          select LAST_INSERT_ID()
+        </selectKey>
+        insert into video(video_name,video_describe,grade,label_id,status)
+        VALUES(#{videoName,jdbcType=VARCHAR}, #{videoDescribe,jdbcType=VARCHAR},
+        #{grade,jdbcType=VARCHAR},#{labelId,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR});
+    </insert>
+
+    <!--根据视频id修改status为0-->
+    <update id="uploadOver" parameterType="java.lang.Integer">
+        UPDATE video SET `status`=1 WHERE video_id= #{videoId}
+    </update>
+
+</mapper>

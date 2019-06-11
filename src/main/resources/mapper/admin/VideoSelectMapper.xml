@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.dao.admin.VideoSelectDao">
+
+    <!--<resultMap id="selectVideoByNameMap" type="com.exam.bean.admin.VideoBean" >-->
+        <!--<id column="video_id" property="videoId" />-->
+        <!--<result column="video_name" property="videoName" />-->
+        <!--<result column="video_describe" property="videoDescribe" />-->
+        <!--<result column="play_amount" property="playAmount" />-->
+        <!--<result column="grade" property="grade" />-->
+        <!--<result column="label_id" property="labelId" />-->
+        <!--<result column="create_time" property="createTime" />-->
+        <!--<result column="status" property="status" />-->
+    <!--</resultMap>-->
+    <select id="selectVideoByName" resultType="com.exam.bean.admin.VideoBean">
+        SELECT video_id AS videoId,
+                video_name AS videoName,
+                video_describe AS videoDescribe,
+                play_amount AS playAmount,
+                grade AS grade,
+                label_id AS labelId,
+                create_time AS createTime,
+                status AS status
+        FROM video
+        WHERE video_name LIKE #{name}
+        ORDER BY status
+    </select>
+
+    <select id="selectVideoByInfo"  resultType="com.exam.bean.admin.VideoBean">
+        SELECT video_id AS videoId,
+                video_name AS videoName,
+                video_describe AS videoDescribe,
+                play_amount AS playAmount,
+                grade AS grade,
+                video.label_id AS labelId,
+                create_time AS createTime,
+                video.status AS status
+        FROM video
+        JOIN label
+        ON label.label_id = video.label_id
+        WHERE classify LIKE #{classify} AND video.label_id LIke #{labelId} AND video.grade LIKE #{grade}
+        ORDER BY video.status
+        <!--<where>-->
+            <!--<if test="classify != null">-->
+                <!--classify = #{classify}-->
+            <!--</if>-->
+            <!--<if test="labelId != null">-->
+                <!--AND video.label_id = #{labelId}-->
+            <!--</if>-->
+            <!--<if test="grade != null">-->
+                <!--AND video.grade = #{grade}-->
+            <!--</if>-->
+        <!--</where>-->
+    </select>
+
+</mapper>
+

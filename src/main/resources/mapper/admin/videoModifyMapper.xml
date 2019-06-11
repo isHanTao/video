@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exam.dao.admin.VideoModifyDao">
+    <update id="modifyVideoById" parameterType="com.exam.bean.admin.VideoBean">
+         UPDATE video SET video_name = #{videoName}, video_describe = #{videoDescribe}, grade = #{grade}, label_id = #{labelId}  where video_id = #{videoId}
+    </update>
+    <delete id="deleteVideoById">
+        DELETE FROM video WHERE video_id = #{videoId}
+    </delete>
+    <select id="selectVideos" resultType="com.exam.bean.admin.VideoBean">
+        SELECT * FROM video WHERE video_name LIKE "%%"
+    </select>
+    <select id="getVideoById" resultType="com.exam.bean.admin.VideoBean">
+        SELECT * FROM video WHERE video_id = #{videoId} limit 1
+    </select>
+
+</mapper>

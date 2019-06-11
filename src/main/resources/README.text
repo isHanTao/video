@@ -1,0 +1,33 @@
+开发总规范看开发公约
+各层规范请看demoxxx
+mgb.xml和test包里的MBGTest为mybatis generator自动化工具，有代码破坏性情谨慎使用，使用完就将main方法注掉
+aop和拦截器定义好后在aop.xml和interceptor注册
+所有字符常量在config包里定义，如果是相关业务常量请自建类，如：StuStatic 代码中不允许出现直接量的参数
+正则在com.exam.config.RegexStatic
+异步交互（ajax）用com.exam.bean.common.Msg进行传递参数详情看demo
+两表及以上的写操作用@Transactional 详情看demo
+文件上传使用com.exam.service.common.UploadService提供的方法
+登录、注册、注销、操作session的基础方法在com.exam.util.http.RequestUtil
+分类和年级都是写死的 去config包找参数
+
+接口：
+函数式接口统一写在lambda包
+用@RestController 代替 @Controller 方法上就不用写@Responsebody了
+管理员所有接口用@Security注解标明身份 登录和注销接口 用LOG身份
+所有接口返回都要使用Msg类包装
+
+
+
+缓存相关：
+所有对视频的读取操作需要用@Cacheable(value = "videos",key = "methodName") 放在service的相关方法上 value都是统一的 （这是用户端才会读操作）
+key的规则是SPEL 有比较复杂操作的同学可以去看看怎么写 或者来问我 下面给一些默认的key规则
+普通的直接取list的操作 key="methodName"
+带分页的list操作 key="methodName+#page"
+有筛选的list操作 key="methodName+#"  #后接关键参数 有多个就继续拼
+单个查询 key="#对象.id" 可以获取参数列表中某个对象的成员（需要get方法）
+缓存key写的不好 容易造成查询混乱的情况，也就是不同业务key重复
+原则上不同的查询条件 key也会不同
+
+对于写(插入、修改、删除)操作（管理员）
+ @CacheEvict(value = "videos",allEntries = true) 使用此注解清除缓存 放在service的相关方法上
+
