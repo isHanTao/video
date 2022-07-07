@@ -20,7 +20,7 @@
   </build>
   <properties>
     <spring.group>org.springframework</spring.group>
-    <spring.version>4.3.10.RELEASE</spring.version>
+    <spring.version>5.2.21.RELEASE</spring.version>
   </properties>
   <dependencies>
 
